@@ -2,26 +2,17 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
 
-from enum import Enum
+from django.utils.translation import gettext_lazy as _
 
-
-class UserType(Enum):
-    STUDENT = 1
-    TEACHER = 2
-    STAFF = 3
-
-    @classmethod
-    def choices(cls):
-        return tuple((i.name, i.value) for i in cls)
 
 
 class UserManager(BaseUserManager):
-    
+
     def create_user(self, email, password, user_type, **extra_fields):
         """Create and save a new user"""
         if not email:
             raise ValueError('Users must have an email address')
-        user = self.model(email=self.normalize_email(email), user_type=user_type, **extra_fields)
+        user = self.model(email=self.normalize_email(email), type=user_type, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
 
@@ -29,8 +20,7 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password):
         """Create and save a new super user"""
-        user = self.create_user(email, password, UserType.STAFF)
-        user.is_superuser = True
+        user = self.create_user(email, password, User.Types.STAFF)
         user.save(using=self._db)
 
         return user
@@ -38,10 +28,18 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     """Custom user model with email instead of username"""
+
+    class Types(models.TextChoices):
+        STUDENT = 1
+        TEACHER = 2
+        STAFF = 3
+
+    type = models.CharField(_('Type'), max_length=50, choices=Types.choices, default=Types.STUDENT)
+
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
-    user_type = models.CharField(max_length=255, choices=UserType.choices())
+    biography = models.CharField(max_length=255, default='no information')
 
     objects = UserManager()
 
