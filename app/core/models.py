@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
         """Create and save a new user"""
         if not email:
             raise ValueError('Users must have an email address')
-        user = self.model(email=self.normalize_email(email), type=user_type, **extra_fields)
+        user = self.model(email=self.normalize_email(email), user_type=user_type, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
 
@@ -36,7 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         TEACHER = 2
         STAFF = 3
 
-    type = models.CharField(_('Type'), max_length=50, choices=Types.choices, default=Types.STUDENT)
+    user_type = models.CharField(_('Type'), max_length=50, choices=Types.choices, default=Types.STUDENT)
 
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
