@@ -30,5 +30,5 @@ class ModelTests(TestCase):
             user_type=user_type
         )
 
-        self.assertEqual(user.type, models.User.Types.STUDENT)
-        self.assertNotEqual(user.type, models.User.Types.TEACHER)
+        self.assertEqual(user.user_type, models.User.Types.STUDENT)
+        self.assertNotEqual(user.user_type, models.User.Types.TEACHER)
