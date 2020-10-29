@@ -9,5 +9,5 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advertisement
-        fields = ('id', 'caption', 'user_id')
+        fields = ('id', 'caption')
         read_only_fields = ('id',)
