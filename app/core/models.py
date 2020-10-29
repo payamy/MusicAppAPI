@@ -1,6 +1,17 @@
+import uuid
+import os
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
+
+
+def advertisement_image_file_path(instance, filename):
+    """Generate new file path for ad image"""
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+
+    return os.path.join('upload/recipe/', filename)
+
 
 from django.utils.translation import gettext_lazy as _
 
@@ -57,3 +68,4 @@ class Advertisement(models.Model):
         on_delete=models.CASCADE
     )
     caption = models.CharField(max_length=255)
+    image = models.ImageField(null=True, upload_to=advertisement_image_file_path)
