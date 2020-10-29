@@ -6,7 +6,6 @@ from django.conf import settings
 
 class AdvertisementSerializer(serializers.ModelSerializer):
     """Serialize an ad"""
-    user_id = serializers.RelatedField(source=settings.AUTH_USER_MODEL, read_only=True)
 
     class Meta:
         model = Advertisement
