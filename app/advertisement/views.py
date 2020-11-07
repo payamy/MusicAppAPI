@@ -1,19 +1,11 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from core.models import Advertisement, User
+from core.permissions import TeacherPermission
 
 from advertisement import serializers
-
-
-class TeacherPermission(permissions.BasePermission):
-    """Only teacher have permissions to post ads"""
-    
-    def has_permission(self, request, view):
-        if request.user.user_type == User.Types.TEACHER:
-            return True
-        return False
 
 
 class AdvertisementViewSet(viewsets.ModelViewSet):
