@@ -4,18 +4,17 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
 
+from django.utils.translation import gettext_lazy as _
+
+from django.conf import settings
+
 
 def advertisement_image_file_path(instance, filename):
     """Generate new file path for ad image"""
     ext = filename.split('.')[-1]
     filename = f'{uuid.uuid4()}.{ext}'
 
-    return os.path.join('upload/recipe/', filename)
-
-
-from django.utils.translation import gettext_lazy as _
-
-from django.conf import settings
+    return os.path.join('upload/advertisement/', filename)
 
 
 class UserManager(BaseUserManager):
