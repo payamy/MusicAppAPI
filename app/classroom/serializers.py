@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from core.models import Comment, Tutorial
+from core.models import Classroom, Comment, Tutorial
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -18,4 +18,29 @@ class TutorialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tutorial
         fields = ('id', 'video', 'description')
+        read_only_fields = ('id',)
+
+
+class CreateClassroomSerializer(serializers.ModelSerializer):
+    """Serialize creating a classroom"""
+
+    class Meta:
+        model = Classroom
+        fields = ('title', 'description')
+
+
+class ClassroomSerializer(serializers.ModelSerializer):
+    """Serialize a classroom"""
+    videos = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Tutorial.objects.all()
+    )
+    comments = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Comment.objects.all()
+    )
+
+    class Meta:
+        model = Classroom
+        fields = ('id', 'owner', 'title', 'description')
         read_only_fields = ('id',)
