@@ -43,7 +43,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Classroom
         fields = ('id', 'owner', 'title', 'description')
-        read_only_fields = ('id',)
+        read_only_fields = ('id', 'owner')
 
 
 class ClassroomDetailSerializer(serializers.ModelSerializer):
