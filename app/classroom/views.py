@@ -16,7 +16,6 @@ class BaseClassroomAttrViewSet(viewsets.GenericViewSet,
     permission_classes = (IsAuthenticated)
 
     def get_queryset(self):
-        """Return objects for current authenticated users only"""
         return self.queryset.filter(user=self.request.user).order_by('-name')
 
     def perform_create(self, serializer):
@@ -44,6 +43,7 @@ class CreateClassroomViewSet(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+
 class ManageClassroomViewSet(generics.RetrieveUpdateAPIView):
     """Manage classrooms in database"""
     serializer_class = serializers.ClassroomSerializer
@@ -53,3 +53,11 @@ class ManageClassroomViewSet(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.queryset.filter(user=self.request.user)
+
+
+class ClassroomViewSet(generics.RetrieveAPIView):
+    """Visit classrooms"""
+    serializer_class = serializers.ClassroomDetailSerializer
+    queryset = Classroom.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)

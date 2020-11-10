@@ -44,3 +44,9 @@ class ClassroomSerializer(serializers.ModelSerializer):
         model = Classroom
         fields = ('id', 'owner', 'title', 'description')
         read_only_fields = ('id',)
+
+
+class ClassroomDetailSerializer(serializers.ModelSerializer):
+    """Serialize a classroom detail"""
+    videos = TutorialSerializer(many=True, read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
