@@ -13,38 +13,29 @@ class BaseClassroomAttrViewSet(viewsets.GenericViewSet,
                      mixins.CreateModelMixin):
     """Manage classroom attributes in db"""
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated)
 
     def get_queryset(self):
-        return self.queryset.filter(user=self.request.user).order_by('-name')
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        return self.queryset.filter(user=self.request.user).order_by('-id')
 
 
 class CommentViewSet(BaseClassroomAttrViewSet):
     """Manage comments in the database"""
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 class TutorialViewSet(BaseClassroomAttrViewSet):
     """Manage tutorials in the database"""
     queryset = Tutorial.objects.all()
     serializer_class = serializers.TutorialSerializer
-
-
-class CreateClassroomViewSet(generics.CreateAPIView):
-    """Create classrooms in database"""
-    serializer_class = serializers.CreateClassroomSerializer
-    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, TeacherPermission)
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(user=self.request.user)
 
 
-class ManageClassroomViewSet(generics.RetrieveUpdateAPIView):
+class ClassroomViewSet(viewsets.ModelViewSet):
     """Manage classrooms in database"""
     serializer_class = serializers.ClassroomSerializer
     queryset = Classroom.objects.all()
@@ -52,12 +43,13 @@ class ManageClassroomViewSet(generics.RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated, TeacherPermission)
 
     def get_object(self):
-        return self.queryset.filter(user=self.request.user)
+        return self.queryset.filter(owner=self.request.user)
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
-class ClassroomViewSet(generics.RetrieveAPIView):
-    """Visit classrooms"""
-    serializer_class = serializers.ClassroomDetailSerializer
-    queryset = Classroom.objects.all()
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return serializers.ClassroomDetailSerializer
+        
+        return self.serializer_class
