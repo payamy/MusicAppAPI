@@ -68,3 +68,14 @@ class Advertisement(models.Model):
     )
     caption = models.CharField(max_length=255)
     image = models.ImageField(null=True, upload_to=advertisement_image_file_path)
+
+
+
+class Classroom(models.Model): 
+    owner = modles.ForeignKey(
+        settings.AUTH_USER_MODEL ,
+        on_delete = models.CASCADE)
+
+    name = modles.CharField(max_length=255, blank=False)
+    description = models.CharField(max_length= 255, blank= False)
+
