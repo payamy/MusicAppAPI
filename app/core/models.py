@@ -63,7 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Advertisement(models.Model):
     """Ads that each user can post"""
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL\,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
     caption = models.CharField(max_length=255)
@@ -73,7 +73,7 @@ class Advertisement(models.Model):
 
 class Classroom(models.Model): 
     owner = modles.ForeignKey(
-        settings.AUTH_USER_MODEL ,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
 
     name = modles.CharField(max_length=255, blank=False)
