@@ -27,3 +27,6 @@ class UserAdmin(BaseUserAdmin):
 
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Advertisement)
+admin.site.register(models.Classroom)
+admin.site.register(models.Tutorial)
+admin.site.register(models.Comment)
