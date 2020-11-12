@@ -90,7 +90,16 @@ class Tutorial(models.Model):
     title = models.CharField(max_length=255, blank=False),
     description = models.CharField(max_length=255, blank=False),
     video = models.FileField(upload_to='videos/', null=True, verbose_name=""),
-    likes = midels.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title + ": " + str(self.video)
+
+class Comment(models.Model):
+    Classroom = models.ForeignKey(
+        Classroom,
+        on_delete=models.CASCADE
+        related_names = 'comments')
+    text = models.CharField(max_length=255, blank=False),
+    likes = models.IntegerField(default=0)
+    
