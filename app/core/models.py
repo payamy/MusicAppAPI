@@ -74,7 +74,9 @@ class Advertisement(models.Model):
 class Classroom(models.Model): 
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE,
+        related_name='classroom'
+    )
 
     name = models.CharField(max_length=255, blank=False, default='-')
     description = models.CharField(max_length= 255, blank= False, default='-')

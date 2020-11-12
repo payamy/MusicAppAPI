@@ -25,14 +25,14 @@ class ClassroomSerializer(serializers.ModelSerializer):
     """Serialize a classroom"""
     tutorials = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Tutorial.objects.all()
+        read_only=True
     )
     comments = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Comment.objects.all()
+        read_only=True
     )
 
     class Meta:
         model = Classroom
         fields = ('id', 'name', 'description', 'tutorials', 'comments')
-        read_only_fields = ('id', 'tutorials', 'comments')
+        read_only_fields = ('id',)

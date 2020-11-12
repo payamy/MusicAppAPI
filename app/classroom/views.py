@@ -1,6 +1,7 @@
-from rest_framework import generics, viewsets, mixins
+from rest_framework import generics, viewsets, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from core.models import Classroom, Comment, Tutorial
 from core.permissions import TeacherPermission
@@ -13,10 +14,7 @@ class BaseClassroomAttrViewSet(viewsets.GenericViewSet,
                      mixins.CreateModelMixin):
     """Manage classroom attributes in db"""
     authentication_classes = (TokenAuthentication,)
-    
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
+        
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
 
@@ -27,12 +25,23 @@ class CommentViewSet(BaseClassroomAttrViewSet):
     serializer_class = serializers.CommentSerializer
     permission_classes = (IsAuthenticated,)
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
-class TutorialViewSet(BaseClassroomAttrViewSet):
+
+class TutorialViewSet(BaseClassroomAttrViewSet, generics.RetrieveAPIView):
     """Manage tutorials in the database"""
     queryset = Tutorial.objects.all()
     serializer_class = serializers.TutorialSerializer
     permission_classes = (IsAuthenticated, TeacherPermission)
+
+    def perform_create(self, serializer):
+        
+        u = serializer.context['request'].user
+        if serializer.validated_data['classroom'] in u.classroom.all():
+            serializer.save(user=self.request.user)
+        else:
+            return Response("Not OK", status=status.HTTP_400_BAD_REQUEST)
 
 
 class ClassroomViewSet(viewsets.ModelViewSet):
