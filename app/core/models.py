@@ -79,3 +79,5 @@ class Classroom(models.Model):
     name = modles.CharField(max_length=255, blank=False)
     description = models.CharField(max_length= 255, blank= False)
 
+
+class Tutorial(models.Model)
