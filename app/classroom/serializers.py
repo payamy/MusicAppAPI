@@ -34,6 +34,6 @@ class ClassroomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Classroom
-        fields = ('id', 'title', 'description', 'comments', 'videos')
+        fields = ('id', 'name', 'description', 'comments', 'videos')
         read_only_fields = ('id', 'comments', 'videos')
         depth = 1
