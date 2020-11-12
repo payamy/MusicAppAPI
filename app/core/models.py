@@ -76,20 +76,26 @@ class Classroom(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
 
-    name = models.CharField(max_length=255, blank=False)
-    description = models.CharField(max_length= 255, blank= False)
+    name = models.CharField(max_length=255, blank=False, default='-')
+    description = models.CharField(max_length= 255, blank= False, default='-')
 
 
     
 
-class Tutorial(models.Model): 
+class Tutorial(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        default=1
+    )
     classroom = models.ForeignKey(
         Classroom,
         on_delete=models.CASCADE,
-        related_name='tutorials')
-    title = models.CharField(max_length=255, blank=False),
-    description = models.CharField(max_length=255, blank=False),
-    video = models.FileField(upload_to='videos/', null=True, verbose_name=""),
+        related_name='tutorials'
+    )
+    title = models.CharField(max_length=255, blank=False, default='-')
+    description = models.CharField(max_length=255, blank=False, default='-')
+    video = models.FileField(upload_to='videos/', null=True, verbose_name="")
     likes = models.IntegerField(default=0)
 
     def __str__(self):
@@ -103,6 +109,7 @@ class Comment(models.Model):
     classroom = models.ForeignKey(
         Classroom,
         on_delete=models.CASCADE,
-        related_name='comments')
-    text = models.CharField(max_length=255, blank=False),
+        related_name='comments'
+    )
+    text = models.CharField(max_length=255, blank=False, default='-')
     likes = models.IntegerField(default=0)

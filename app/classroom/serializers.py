@@ -8,7 +8,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'text', 'user', 'classroom')
+        fields = ('id', 'text', 'classroom')
         read_only_fields = ('id',)
 
 
@@ -17,15 +17,15 @@ class TutorialSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tutorial
-        fields = ('id', 'video', 'description', 'classroom')
+        fields = ('id', 'title','video', 'description', 'classroom')
         read_only_fields = ('id',)
 
 
 class ClassroomSerializer(serializers.ModelSerializer):
     """Serialize a classroom"""
-    videos = serializers.PrimaryKeyRelatedField(
+    tutorials = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Tutorial.objects.all(),
+        queryset=Tutorial.objects.all()
     )
     comments = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -34,6 +34,5 @@ class ClassroomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Classroom
-        fields = ('id', 'name', 'description', 'comments', 'videos')
-        read_only_fields = ('id', 'comments', 'videos')
-        depth = 1
+        fields = ('id', 'name', 'description', 'tutorials', 'comments')
+        read_only_fields = ('id', 'tutorials', 'comments')
