@@ -14,9 +14,6 @@ class BaseClassroomAttrViewSet(viewsets.GenericViewSet,
     """Manage classroom attributes in db"""
     authentication_classes = (TokenAuthentication,)
 
-    def get_queryset(self):
-        return self.queryset.filter(user=self.request.user).order_by('-id')
-
 
 class CommentViewSet(BaseClassroomAttrViewSet):
     """Manage comments in the database"""
@@ -31,9 +28,6 @@ class TutorialViewSet(BaseClassroomAttrViewSet):
     serializer_class = serializers.TutorialSerializer
     permission_classes = (IsAuthenticated, TeacherPermission)
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
 
 class ClassroomViewSet(viewsets.ModelViewSet):
     """Manage classrooms in database"""
@@ -47,9 +41,3 @@ class ClassroomViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
-    def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return serializers.ClassroomDetailSerializer
-        
-        return self.serializer_class

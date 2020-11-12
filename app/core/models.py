@@ -97,7 +97,7 @@ class Tutorial(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL\,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
     classroom = models.ForeignKey(
