@@ -25,7 +25,7 @@ class ClassroomSerializer(serializers.ModelSerializer):
     """Serialize a classroom"""
     videos = serializers.PrimaryKeyRelatedField(
         many=True,
-        queryset=Tutorial.objects.filter(),
+        queryset=Tutorial.objects.all(),
     )
     comments = serializers.PrimaryKeyRelatedField(
         many=True,
