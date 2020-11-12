@@ -86,7 +86,7 @@ class Tutorial(models.Model):
     classroom = models.ForeignKey(
         Classroom,
         on_delete=models.CASCADE,
-        related_names='tutorials')
+        related_name='tutorials')
     title = models.CharField(max_length=255, blank=False),
     description = models.CharField(max_length=255, blank=False),
     video = models.FileField(upload_to='videos/', null=True, verbose_name=""),
@@ -103,6 +103,6 @@ class Comment(models.Model):
     classroom = models.ForeignKey(
         Classroom,
         on_delete=models.CASCADE,
-        related_names='comments')
+        related_name='comments')
     text = models.CharField(max_length=255, blank=False),
     likes = models.IntegerField(default=0)
