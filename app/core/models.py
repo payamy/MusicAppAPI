@@ -72,11 +72,11 @@ class Advertisement(models.Model):
 
 
 class Classroom(models.Model): 
-    owner = modles.ForeignKey(
+    owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
 
-    name = modles.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=255, blank=False)
     description = models.CharField(max_length= 255, blank= False)
 
 
