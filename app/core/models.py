@@ -80,4 +80,17 @@ class Classroom(models.Model):
     description = models.CharField(max_length= 255, blank= False)
 
 
-class Tutorial(models.Model)
+    
+
+class Tutorial(models.Model): 
+    user = models.ForeignKey(
+        Classroom,
+        on_delete = models.CASCADE
+        related_names = 'tutorials')
+    title = models.CharField(max_length=255, blank=False),
+    description = models.CharField(max_length=255, blank=False),
+    video = models.FileField(upload_to='videos/', null=True, verbose_name=""),
+    likes = midels.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title + ": " + str(self.video)
