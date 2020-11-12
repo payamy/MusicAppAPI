@@ -63,8 +63,46 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Advertisement(models.Model):
     """Ads that each user can post"""
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        settings.AUTH_USER_MODEL\,
         on_delete=models.CASCADE
     )
     caption = models.CharField(max_length=255)
     image = models.ImageField(null=True, upload_to=advertisement_image_file_path)
+
+
+
+class Classroom(models.Model): 
+    owner = modles.ForeignKey(
+        settings.AUTH_USER_MODEL ,
+        on_delete=models.CASCADE)
+
+    name = modles.CharField(max_length=255, blank=False)
+    description = models.CharField(max_length= 255, blank= False)
+
+
+    
+
+class Tutorial(models.Model): 
+    classroom = models.ForeignKey(
+        Classroom,
+        on_delete=models.CASCADE,
+        related_names='tutorials')
+    title = models.CharField(max_length=255, blank=False),
+    description = models.CharField(max_length=255, blank=False),
+    video = models.FileField(upload_to='videos/', null=True, verbose_name=""),
+    likes = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title + ": " + str(self.video)
+
+class Comment(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL\,
+        on_delete=models.CASCADE
+    )
+    classroom = models.ForeignKey(
+        Classroom,
+        on_delete=models.CASCADE,
+        related_names='comments')
+    text = models.CharField(max_length=255, blank=False),
+    likes = models.IntegerField(default=0)
