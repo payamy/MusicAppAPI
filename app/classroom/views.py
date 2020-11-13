@@ -36,7 +36,7 @@ class TutorialViewSet(BaseClassroomAttrViewSet, generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated, TeacherPermission)
 
     def perform_create(self, serializer):
-        
+
         u = serializer.context['request'].user
         if serializer.validated_data['classroom'] in u.classroom.all():
             serializer.save(user=self.request.user)
@@ -51,7 +51,7 @@ class ClassroomViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, TeacherPermission)
 
-    def get_object(self):
+    def get_queryset(self):
         return self.queryset.filter(owner=self.request.user)
 
     def perform_create(self, serializer):

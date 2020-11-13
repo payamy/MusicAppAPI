@@ -93,7 +93,8 @@ class Tutorial(models.Model):
     classroom = models.ForeignKey(
         Classroom,
         on_delete=models.CASCADE,
-        related_name='tutorials'
+        related_name='tutorials',
+        default=1
     )
     title = models.CharField(max_length=255, blank=False, default='-')
     description = models.CharField(max_length=255, blank=False, default='-')
@@ -106,12 +107,14 @@ class Tutorial(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        default=1
     )
     classroom = models.ForeignKey(
         Classroom,
         on_delete=models.CASCADE,
-        related_name='comments'
+        related_name='comments',
+        default=7
     )
     text = models.CharField(max_length=255, blank=False, default='-')
     likes = models.IntegerField(default=0)
