@@ -6,6 +6,7 @@ from advertisement import views
 
 router = DefaultRouter()
 router.register('advertisements', views.AdvertisementViewSet)
+router.register('tags', views.TagViewSet)
 
 app_name = 'advertisement'
 

@@ -37,7 +37,7 @@ class PublicClassroomAPITest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class ForbiddenclassroomvertisementAPITest(TestCase):
+class ForbiddenClassroomAPITest(TestCase):
     """Test student classroom API access"""
 
     def setUp(self):
@@ -63,7 +63,7 @@ class ForbiddenclassroomvertisementAPITest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
 
-class PrivateclassroomvertisementAPITest(TestCase):
+class PrivateClassroomAPITest(TestCase):
     """Test authorized API access"""
 
     def setUp(self):

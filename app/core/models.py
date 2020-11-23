@@ -3,6 +3,7 @@ import os
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
+from django.contrib.postgres.fields import CICharField
 
 from django.utils.translation import gettext_lazy as _
 
@@ -70,7 +71,6 @@ class Advertisement(models.Model):
     image = models.ImageField(null=True, upload_to=advertisement_image_file_path)
 
 
-
 class Classroom(models.Model): 
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -80,8 +80,6 @@ class Classroom(models.Model):
 
     name = models.CharField(max_length=255, blank=False, default='-')
     description = models.CharField(max_length= 255, blank= False, default='-')
-
-
     
 
 class Tutorial(models.Model):
@@ -104,6 +102,7 @@ class Tutorial(models.Model):
     def __str__(self):
         return self.title + ": " + str(self.video)
 
+
 class Comment(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -118,3 +117,18 @@ class Comment(models.Model):
     )
     text = models.CharField(max_length=255, blank=False, default='-')
     likes = models.IntegerField(default=0)
+
+
+class Tag(models.Model):
+    """Helper model for categorizing ads"""
+    title = models.CharField(max_length=255, primary_key=True)
+
+    def clean(self):
+        self.title = self.title.lower()
+    
+    def __str__(self):
+        return self.title
+
+    def save(self, **kwargs):
+        self.clean()
+        return super(Tag, self).save(**kwargs)
