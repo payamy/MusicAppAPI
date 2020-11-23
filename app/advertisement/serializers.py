@@ -17,6 +17,14 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
+class AdvertisementPublicSerializer(serializers.ModelSerializer):
+    """Serialize ads for all users"""
+
+    class Meta:
+        model = Advertisement
+        fields = ('id', 'user','caption', 'image', 'tags')
+
+
 class TagSerializer(serializers.ModelSerializer):
     """Serialize a tag"""
 
