@@ -69,6 +69,7 @@ class Advertisement(models.Model):
     )
     caption = models.CharField(max_length=255)
     image = models.ImageField(null=True, upload_to=advertisement_image_file_path)
+    tags = models.ManyToManyField('Tag')
 
 
 class Classroom(models.Model): 

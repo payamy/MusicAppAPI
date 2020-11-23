@@ -20,7 +20,13 @@ class AdvertisementViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-    
+
+    def get_serializer_class(self):
+
+        if self.action == 'retrieve':
+            return serializers.AdvertisementDetailedSerializer
+
+        return self.serializer_class
 
 class TagViewSet(viewsets.ModelViewSet):
     """Manage tags in database"""
