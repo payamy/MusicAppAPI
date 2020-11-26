@@ -36,3 +36,10 @@ class ClassroomSerializer(serializers.ModelSerializer):
         model = Classroom
         fields = ('id', 'name', 'description', 'tutorials', 'comments')
         read_only_fields = ('id',)
+
+
+    class ClassroomPublicSerializer(serializers.ModelSerializer):
+        """Serializer Classroom for all users"""
+
+        class Meta:
+            model
