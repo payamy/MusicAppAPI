@@ -56,3 +56,13 @@ class ClassroomViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class ClassroomPublicViewSet(viewsets.ReadOnlyModelViewSet):
+    """ViewSet to all users to use Classrooms"""
+    serializer_class = serializers.ClassroomPublicSerializer
+    queryset = Classroom.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    
