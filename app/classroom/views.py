@@ -56,3 +56,25 @@ class ClassroomViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class ClassroomPublicViewSet(viewsets.ReadOnlyModelViewSet):
+    """ViewSet to all users to use Classrooms"""
+    serializer_class = serializers.ClassroomPublicSerializer
+    queryset = Classroom.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def _params_to_ints(self, qs):
+        """Convert a list of string IDs to a list of Integers"""
+        return[int(str_id) for str_id in qs.split(',')]
+        
+    def get_queryset(self):
+        """Retrieve requested ads fir authentication users"""
+        owner = self.request.query_params.get('owner')
+        queryset = self.queryset
+
+        if owner:
+            owner_id = self._params_to_ints(owner)
+            queryset = queryset.filter(owne_id_in=owner_id)
+            return queryset
