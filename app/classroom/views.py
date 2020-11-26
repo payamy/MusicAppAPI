@@ -70,5 +70,11 @@ class ClassroomPublicViewSet(viewsets.ReadOnlyModelViewSet):
         return[int(str_id) for str_id in qs.split(',')]
         
     def get_queryset(self):
+        """Retrieve requested ads fir authentication users"""
         owner = self.request.query_params.get('owner')
         queryset = self.queryset
+
+        if owner:
+            owner_id = self._params_to_ints(owner)
+            queryset = queryset.filter(owne_id_in=owner_id)
+            return queryset
