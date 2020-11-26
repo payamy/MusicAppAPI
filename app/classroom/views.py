@@ -65,4 +65,10 @@ class ClassroomPublicViewSet(viewsets.ReadOnlyModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
-    
+    def _params_to_ints(self, qs):
+        """Convert a list of string IDs to a list of Integers"""
+        return[int(str_id) for str_id in qs.split(',')]
+        
+    def get_queryset(self):
+        owner = self.request.query_params.get('owner')
+        queryset = self.queryset
