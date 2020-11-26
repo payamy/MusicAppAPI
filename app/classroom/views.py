@@ -76,5 +76,6 @@ class ClassroomPublicViewSet(viewsets.ReadOnlyModelViewSet):
 
         if owner:
             owner_id = self._params_to_ints(owner)
-            queryset = queryset.filter(owne_id_in=owner_id)
-            return queryset
+            queryset = queryset.filter(owner__id__in=owner_id)
+            
+        return queryset

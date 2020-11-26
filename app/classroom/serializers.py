@@ -43,4 +43,4 @@ class ClassroomPublicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Classroom
-        fields = ('id', 'owner', 'name', 'description' , 'toturials', 'comments')
+        fields = ('id', 'owner', 'name', 'description' , 'tutorials', 'comments')
