@@ -42,4 +42,5 @@ class ClassroomSerializer(serializers.ModelSerializer):
         """Serializer Classroom for all users"""
 
         class Meta:
-            model
+            model = Classroom
+            fields = ('id', 'owner', 'name', 'description' , 'toturials', 'comments')
