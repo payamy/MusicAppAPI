@@ -114,7 +114,7 @@ class Comment(models.Model):
         Classroom,
         on_delete=models.CASCADE,
         related_name='comments',
-        default=7
+        default=1
     )
     text = models.CharField(max_length=255, blank=False, default='-')
     likes = models.IntegerField(default=0)

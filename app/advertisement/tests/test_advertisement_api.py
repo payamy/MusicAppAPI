@@ -10,7 +10,8 @@ from core.models import User, Advertisement
 from advertisement.serializers import AdvertisementSerializer
 
 
-ADVERTISEMENT_URL = reverse('advertisement:advertisement-list')
+ADVERTISEMENT_URL = reverse('advertisement:myadvertisement-list')
+PUBLIC_ADVERTISEMENT_URL = reverse('advertisement:advertisement-list')
 
 
 def sample_ad(user, **params):
@@ -54,6 +55,10 @@ class ForbiddenAdvertisementAPITest(TestCase):
         res = self.client.get(ADVERTISEMENT_URL)
 
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+        res = self.client.get(PUBLIC_ADVERTISEMENT_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
     
     def test_create_ad_forbidden(self):
         """Test creating an ad by student user"""

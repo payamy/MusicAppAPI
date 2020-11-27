@@ -10,7 +10,8 @@ from core.models import Classroom, User
 from classroom.serializers import ClassroomSerializer
 
 
-CLASSROOM_URL = reverse('classroom:classroom-list')
+CLASSROOM_URL = reverse('classroom:myclassroom-list')
+PUBLIC_CLASSROOM_URL = reverse('classroom:classroom-list')
 
 
 def sample_classroom(user, *params):
@@ -51,10 +52,14 @@ class ForbiddenClassroomAPITest(TestCase):
         self.client.force_authenticate(self.user)
         
     def test_student_api_access(self):
-        """Test if a student user could access classrooms (couldn't)"""
+        """Test if a student user could access classrooms"""
         res = self.client.get(CLASSROOM_URL)
 
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+        res = self.client.get(PUBLIC_CLASSROOM_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
     
     def test_create_classroom_forbidden(self):
         """Test creating an classroom by student user"""

@@ -85,14 +85,3 @@ class PrivateCommentAPITest(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
-
-    def test_create_comment(self):
-        """Test commenting by user"""
-        payload = {
-            'text': 'Not the thing that i thought',
-        }
-        res = self.client.post(COMMENT_URL, payload)
-
-        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        comment = Comment.objects.get(id=res.data['id'])
-        self.assertEqual(payload['text'], getattr(comment, 'text'))
