@@ -31,12 +31,12 @@ class TagAPITest(TestCase):
             'title': 'piano',
         }
         payload2 = {
-            'title': 'piano2',
+            'title': 'Piano',
         }
         res = self.client.post(TAG_URL, payload)
-        res2 = self.client.post(TAG_URL, payload)
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(res2.status_code, status.HTTP_400_BAD_REQUEST)
-
-        
+        try:
+            self.client.post(TAG_URL, payload2)
+        except:
+            self.assertTrue("Key already exists")
