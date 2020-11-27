@@ -7,7 +7,7 @@ from rest_framework import status
 
 from core.models import Classroom, User
 
-from classroom.serializers import ClassroomSerializer
+from classroom.serializers import ClassroomSerializer, ClassroomPublicSerializer
 
 
 CLASSROOM_URL = reverse('classroom:myclassroom-list')
@@ -122,3 +122,26 @@ class PrivateClassroomAPITest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         classroom = Classroom.objects.get(id=res.data['id'])
         self.assertEqual(payload['name'], getattr(classroom, 'name'))
+
+    def test_filter_classrooms_by_users(self):
+        """Test filtering classrooms by users"""
+        user2 = get_user_model().objects.create_user(
+            email='user2@mail.com',
+            password='secondpass',
+            name='User2',
+            user_type=User.Types.TEACHER
+        )
+
+        class1 = sample_classroom(user=self.user)
+        class2 = sample_classroom(user=user2)
+
+        res = self.client.get(
+            PUBLIC_CLASSROOM_URL,
+            {'owner': f'{self.user.id}'}
+        )
+
+        serializer1 = ClassroomPublicSerializer(class1)
+        serializer2 = ClassroomPublicSerializer(class2)
+
+        self.assertIn(serializer1.data, res.data)
+        self.assertNotIn(serializer2.data, res.data)
