@@ -40,13 +40,15 @@ class ClassroomSerializer(serializers.ModelSerializer):
 
 class ClassroomPublicSerializer(serializers.ModelSerializer):
     """Serializer Classroom for all users"""
-    tutorials = serializers.PrimaryKeyRelatedField(
+    tutorials = serializers.HyperlinkedRelatedField(
         many=True,
-        read_only=True
+        read_only=True,
+        view_name='classroom:tutorial-detail'
     )
-    comments = serializers.PrimaryKeyRelatedField(
+    comments = serializers.HyperlinkedRelatedField(
         many=True,
-        read_only=True
+        read_only=True,
+        view_name='classroom:comment-detail'
     )
 
     class Meta:
