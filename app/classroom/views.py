@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from rest_framework import generics, viewsets, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -11,12 +13,10 @@ from classroom import serializers
 
 class BaseClassroomAttrViewSet(viewsets.GenericViewSet,
                      mixins.ListModelMixin,
-                     mixins.CreateModelMixin):
+                     mixins.CreateModelMixin,
+                     generics.RetrieveAPIView):
     """Manage classroom attributes in db"""
     authentication_classes = (TokenAuthentication,)
-        
-    def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
 
 
 class CommentViewSet(BaseClassroomAttrViewSet):
@@ -29,7 +29,7 @@ class CommentViewSet(BaseClassroomAttrViewSet):
         serializer.save(user=self.request.user)
 
 
-class TutorialViewSet(BaseClassroomAttrViewSet, generics.RetrieveAPIView):
+class TutorialViewSet(BaseClassroomAttrViewSet):
     """Manage tutorials in the database"""
     queryset = Tutorial.objects.all()
     serializer_class = serializers.TutorialSerializer
@@ -42,6 +42,9 @@ class TutorialViewSet(BaseClassroomAttrViewSet, generics.RetrieveAPIView):
             serializer.save(user=self.request.user)
         else:
             return Response("Not OK", status=status.HTTP_400_BAD_REQUEST)
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
 
 
 class ClassroomViewSet(viewsets.ModelViewSet):
@@ -70,7 +73,7 @@ class ClassroomPublicViewSet(viewsets.ReadOnlyModelViewSet):
         return[int(str_id) for str_id in qs.split(',')]
         
     def get_queryset(self):
-        """Retrieve requested ads fir authentication users"""
+        """Retrieve requested classes for authenticated users"""
         owner = self.request.query_params.get('owner')
         queryset = self.queryset
 
