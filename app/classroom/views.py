@@ -5,7 +5,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from core.models import Classroom, Comment, Tutorial
+from core.models import Classroom, Comment, Tutorial, User
 from core.permissions import TeacherPermission
 
 from classroom import serializers
@@ -17,13 +17,13 @@ class BaseClassroomAttrViewSet(viewsets.GenericViewSet,
                      generics.RetrieveAPIView):
     """Manage classroom attributes in db"""
     authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class CommentViewSet(BaseClassroomAttrViewSet):
     """Manage comments in the database"""
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializer
-    permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -33,18 +33,17 @@ class TutorialViewSet(BaseClassroomAttrViewSet):
     """Manage tutorials in the database"""
     queryset = Tutorial.objects.all()
     serializer_class = serializers.TutorialSerializer
-    permission_classes = (IsAuthenticated, TeacherPermission)
 
     def perform_create(self, serializer):
 
         u = serializer.context['request'].user
         if serializer.validated_data['classroom'] in u.classroom.all():
-            serializer.save(user=self.request.user)
+            if self.request.user.user_type == User.Types.STUDENT:
+                serializer.save(user=self.request.user)
+                return Response("Ok", status=status.HTTP_200_OK)
+            return Response("Only teachers have permission to post video", status=status.HTTP_403_FORBIDDEN)
         else:
-            return Response("Not OK", status=status.HTTP_400_BAD_REQUEST)
-
-    def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
+            return Response("The class you want to post the video is not yours", status=status.HTTP_400_BAD_REQUEST)
 
 
 class ClassroomViewSet(viewsets.ModelViewSet):
