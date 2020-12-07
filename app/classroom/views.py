@@ -38,7 +38,7 @@ class TutorialViewSet(BaseClassroomAttrViewSet):
 
         u = serializer.context['request'].user
         if serializer.validated_data['classroom'] in u.classroom.all():
-            if self.request.user.user_type == User.Types.STUDENT:
+            if self.request.user.user_type == User.Types.TEACHER:
                 serializer.save(user=self.request.user)
                 return Response("Ok", status=status.HTTP_200_OK)
             return Response("Only teachers have permission to post video", status=status.HTTP_403_FORBIDDEN)
