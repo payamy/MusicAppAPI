@@ -141,6 +141,10 @@ class Answer(models.Model):
         related_name='question')
     user=models.ForeignKey(User)
     answer=models.CharField(max_length=20)
+    fileAnswer=models.FileField(upload_to='choicesFiles/', null=True, verbose_name="")
+      
+      def__str__(self):
+        return self.answer + ": " + str(self.fileAnswer)
 
     def give_choices(self,ANSWER_CHOICES):
         self.answer=models.CharField(max_length=20,choices=ANSWER_CHOICES)
