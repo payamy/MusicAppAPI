@@ -125,3 +125,12 @@ class Questionnarie( models.Model )
     title = models.CharField(max_length=300)
 
 
+class Question(models.Model)
+    questionnarie = models.ForeignKey(
+        Questionnarie,
+        on_delete=models.CASCADE,
+        related_name='questionnarie'
+        )
+    question = models.CharField(max_length=500)
+    choice_type = models.CharField(max_length=10) 
+
