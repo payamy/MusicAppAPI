@@ -118,3 +118,10 @@ class Comment(models.Model):
     )
     text = models.CharField(max_length=255, blank=False, default='-')
     likes = models.IntegerField(default=0)
+
+
+class Questionnarie( models.Model )
+    Type = User.Types
+    title = models.CharField(max_length=300)
+
+
