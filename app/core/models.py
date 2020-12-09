@@ -133,3 +133,28 @@ class Tag(models.Model):
     def save(self, **kwargs):
         self.clean()
         return super(Tag, self).save(**kwargs)
+
+
+class DirectMessage(models.Model):
+    """Direct message model between two users"""
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        default=1,
+        related_name='sender'
+    )
+    reciever = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        default=2,
+        related_name='reciever'
+    )
+    text = models.CharField(max_length=255, blank=False, default='-')
+    datetime = models.DateTimeField(_(""), auto_now=False, auto_now_add=True)
+
+    def clean(self):
+        self.text = self.text.strip()
+
+    def save(self, **kwargs):
+        self.clean()
+        return super(DirectMessage, self).save(**kwargs)
