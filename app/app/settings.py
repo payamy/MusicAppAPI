@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'user',
     'advertisement',
     'classroom',
+    'direct',
 ]
 
 MIDDLEWARE = [

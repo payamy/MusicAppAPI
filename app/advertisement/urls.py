@@ -5,7 +5,9 @@ from advertisement import views
 
 
 router = DefaultRouter()
-router.register('advertisements', views.AdvertisementViewSet)
+router.register('my_advertisements', views.AdvertisementViewSet, basename='myadvertisement')
+router.register('advertisements', views.AdvertisementPublicViewSet)
+router.register('tags', views.TagViewSet)
 
 app_name = 'advertisement'
 
