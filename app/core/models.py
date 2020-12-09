@@ -134,3 +134,13 @@ class Question(models.Model)
     question = models.CharField(max_length=500)
     choice_type = models.CharField(max_length=10) 
 
+class Answer(models.Model):
+    questions=models.ForeignKey(
+        Question,
+        on_delete=models.CASCADE,
+        related_name='question')
+    user=models.ForeignKey(User)
+    answer=models.CharField(max_length=20)
+
+    def give_choices(self,ANSWER_CHOICES):
+        self.answer=models.CharField(max_length=20,choices=ANSWER_CHOICES)
