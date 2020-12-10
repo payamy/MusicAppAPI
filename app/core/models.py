@@ -192,3 +192,7 @@ class DirectMessage(models.Model):
         self.clean()
         return super(DirectMessage, self).save(**kwargs)
 
+
+class Chat(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
+    interactors = models.ManyToManyField('User')
