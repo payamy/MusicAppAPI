@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 
 from core.models import Classroom, Comment, Tutorial
 
@@ -54,3 +55,11 @@ class ClassroomPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Classroom
         fields = ('id', 'owner', 'name', 'description' , 'tutorials', 'comments')
+
+
+class TeacherSeriliazer(serializers.ModelSerializer):
+    """Seriliaze a list of teachers"""
+
+    class Meta:
+        model = get_user_model()
+        fields = ('id', 'email', 'name', 'biography')
