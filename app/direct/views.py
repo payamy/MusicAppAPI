@@ -37,14 +37,7 @@ class DirectMessageViewSet(viewsets.ModelViewSet):
         sender_queryset = self.queryset.filter(sender=self.request.user)
         reciever_queryset = self.queryset.filter(reciever=self.request.user)
 
-        print(sender_queryset)
-
         user = self.request.query_params.get('user')
-        print(user)
-
-
-        user = self.request.query_params.get('user')
-
 
         if user:
             user_id = self._params_to_ints(user)
@@ -54,14 +47,10 @@ class DirectMessageViewSet(viewsets.ModelViewSet):
         return sender_queryset | reciever_queryset
 
 
-
 class ChatView(generics.RetrieveAPIView):
     serializer_class = serializers.ChatSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
-    # def get_queryset(self):
-    #     return self.queryset.filter(user=self.request.user)
     def get_object(self):
         return Chat.objects.get(user=self.request.user)
-
