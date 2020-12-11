@@ -5,8 +5,8 @@ from classroom import views
 
 
 router = DefaultRouter()
-router.register('my_classroom', views.ClassroomViewSet)
-router.register('classrooms', views.ClassroomViewSet)
+router.register('my_classrooms', views.ClassroomViewSet, basename='myclassroom')
+router.register('classrooms', views.ClassroomPublicViewSet)
 router.register('tutorials', views.TutorialViewSet)
 router.register('comments', views.CommentViewSet)
 

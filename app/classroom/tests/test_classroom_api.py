@@ -7,10 +7,11 @@ from rest_framework import status
 
 from core.models import Classroom, User
 
-from classroom.serializers import ClassroomSerializer
+from classroom.serializers import ClassroomSerializer, ClassroomPublicSerializer
 
 
-CLASSROOM_URL = reverse('classroom:classroom-list')
+CLASSROOM_URL = reverse('classroom:myclassroom-list')
+PUBLIC_CLASSROOM_URL = reverse('classroom:classroom-list')
 
 
 def sample_classroom(user, *params):
@@ -37,7 +38,7 @@ class PublicClassroomAPITest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class ForbiddenclassroomvertisementAPITest(TestCase):
+class ForbiddenClassroomAPITest(TestCase):
     """Test student classroom API access"""
 
     def setUp(self):
@@ -51,10 +52,14 @@ class ForbiddenclassroomvertisementAPITest(TestCase):
         self.client.force_authenticate(self.user)
         
     def test_student_api_access(self):
-        """Test if a student user could access classrooms (couldn't)"""
+        """Test if a student user could access classrooms"""
         res = self.client.get(CLASSROOM_URL)
 
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+        res = self.client.get(PUBLIC_CLASSROOM_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
     
     def test_create_classroom_forbidden(self):
         """Test creating an classroom by student user"""
@@ -63,7 +68,7 @@ class ForbiddenclassroomvertisementAPITest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
 
-class PrivateclassroomvertisementAPITest(TestCase):
+class PrivateClassroomAPITest(TestCase):
     """Test authorized API access"""
 
     def setUp(self):
@@ -117,3 +122,26 @@ class PrivateclassroomvertisementAPITest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         classroom = Classroom.objects.get(id=res.data['id'])
         self.assertEqual(payload['name'], getattr(classroom, 'name'))
+
+    def test_filter_classrooms_by_users(self):
+        """Test filtering classrooms by users"""
+        user2 = get_user_model().objects.create_user(
+            email='user2@mail.com',
+            password='secondpass',
+            name='User2',
+            user_type=User.Types.TEACHER
+        )
+
+        class1 = sample_classroom(user=self.user)
+        class2 = sample_classroom(user=user2)
+
+        res = self.client.get(
+            PUBLIC_CLASSROOM_URL,
+            {'owner': f'{self.user.id}'}
+        )
+
+        serializer1 = ClassroomPublicSerializer(class1)
+        serializer2 = ClassroomPublicSerializer(class2)
+
+        self.assertIn(serializer1.data, res.data)
+        self.assertNotIn(serializer2.data, res.data)

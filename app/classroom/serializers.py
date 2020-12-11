@@ -38,9 +38,19 @@ class ClassroomSerializer(serializers.ModelSerializer):
         read_only_fields = ('id',)
 
 
-    class ClassroomPublicSerializer(serializers.ModelSerializer):
-        """Serializer Classroom for all users"""
+class ClassroomPublicSerializer(serializers.ModelSerializer):
+    """Serializer Classroom for all users"""
+    tutorials = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='classroom:tutorial-detail'
+    )
+    comments = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='classroom:comment-detail'
+    )
 
-        class Meta:
-            model = Classroom
-            fields = ('id', 'owner', 'name', 'description' , 'toturials', 'comments')
+    class Meta:
+        model = Classroom
+        fields = ('id', 'owner', 'name', 'description' , 'tutorials', 'comments')
