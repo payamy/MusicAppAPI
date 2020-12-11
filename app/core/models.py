@@ -122,7 +122,13 @@ class Comment(models.Model):
 
 class Questionnarie( models.Model )
     Type = User.Types
-    title = models.CharField(max_length=300)
+    title = models.CharField(max_length=100,
+                            verbose_name="Questionnaire",
+                            null=False,
+                            default=None,
+                            blank=False)
+    def __str__(self):
+        return self.title
 
 
 class Question(models.Model)
@@ -131,15 +137,21 @@ class Question(models.Model)
         on_delete=models.CASCADE,
         related_name='questionnarie'
         )
-    question = models.CharField(max_length=500)
+    question = models.CharField(max_length=500,
+                                verbose_name="Questionnaire name",
+                                null=True,
+                                default=None,
+                                blank=True)
     choice_type = models.CharField(max_length=10) 
+
+    def __str__(self):
+        return self.question
 
 class Answer(models.Model):
     questions=models.ForeignKey(
         Question,
         on_delete=models.CASCADE,
         related_name='question')
-    user=models.ForeignKey(User)
     answer=models.CharField(max_length=20)
     fileAnswer=models.FileField(upload_to='choicesFiles/', null=True, verbose_name="")
       
@@ -148,6 +160,13 @@ class Answer(models.Model):
 
     def give_choices(self,ANSWER_CHOICES):
         self.answer=models.CharField(max_length=20,choices=ANSWER_CHOICES)
+
+
+class MultiChoiceAnswer(Answer):
+    answer = models.IntegerField(choices=MULTICHOICE)
+    
+    def __str__(self):
+        return self.answer
 
 class Tag(models.Model):
     """Helper model for categorizing ads"""
