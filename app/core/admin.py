@@ -32,3 +32,8 @@ admin.site.register(models.Tutorial)
 admin.site.register(models.Comment)
 admin.site.register(models.Tag)
 admin.site.register(models.DirectMessage)
+admin.site.register(models.Questionnarie)
+admin.site.register(models.Question)
+admin.site.register(models.Answer)
+admin.site.register(models.Chat)
+

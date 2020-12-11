@@ -1,4 +1,6 @@
 from django.http import Http404
+from django.contrib.auth import get_user_model
+from core.models import User
 
 from rest_framework import generics, viewsets, mixins, status
 from rest_framework.authentication import TokenAuthentication
@@ -81,3 +83,17 @@ class ClassroomPublicViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = queryset.filter(owner__id__in=owner_id)
             
         return queryset
+
+
+
+class TeacherViewSet(viewsets.ReadOnlyModelViewSet):
+    """Get all the teachers in database"""
+    serializer_class = serializers.TeacherSeriliazer
+    queryset = get_user_model().objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Just retrieving teachers"""
+        return self.queryset.filter(user_type=User.Types.TEACHER)
+

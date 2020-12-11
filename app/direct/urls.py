@@ -10,5 +10,6 @@ router.register('my_messages', views.DirectMessageViewSet)
 app_name = 'direct'
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('my_chats/', views.ChatView.as_view(), name='chat'),
 ]

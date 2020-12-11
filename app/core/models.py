@@ -120,30 +120,34 @@ class Comment(models.Model):
     likes = models.IntegerField(default=0)
 
 
-class Questionnarie( models.Model )
+class Questionnarie(models.Model):
     Type = User.Types
     title = models.CharField(max_length=300)
 
 
-class Question(models.Model)
+class Question(models.Model):
     questionnarie = models.ForeignKey(
         Questionnarie,
         on_delete=models.CASCADE,
         related_name='questionnarie'
         )
-    question = models.CharField(max_length=500)
+    text = models.CharField(max_length=500)
     choice_type = models.CharField(max_length=10) 
 
 class Answer(models.Model):
-    questions=models.ForeignKey(
+    question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE,
-        related_name='question')
-    user=models.ForeignKey(User)
-    answer=models.CharField(max_length=20)
-    fileAnswer=models.FileField(upload_to='choicesFiles/', null=True, verbose_name="")
-      
-      def__str__(self):
+        related_name='question'
+        )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+        )
+    answer = models.CharField(max_length=20)
+    fileAnswer = models.FileField(upload_to='choicesFiles/', null=True, verbose_name="")
+
+    def __str__(self):
         return self.answer + ": " + str(self.fileAnswer)
 
     def give_choices(self,ANSWER_CHOICES):
@@ -187,4 +191,9 @@ class DirectMessage(models.Model):
     def save(self, **kwargs):
         self.clean()
         return super(DirectMessage, self).save(**kwargs)
+
+
+class Chat(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
+    interactors = models.ManyToManyField('User')
 
