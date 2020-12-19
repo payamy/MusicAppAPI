@@ -10,10 +10,14 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         many=True,
         queryset=Tag.objects.all()
     )
+    categories = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Tag.objects.all()
+    )
 
     class Meta:
         model = Advertisement
-        fields = ('id', 'caption', 'image', 'tags')
+        fields = ('id', 'caption', 'image', 'tags', 'categories')
         read_only_fields = ('id',)
 
 
@@ -22,7 +26,7 @@ class AdvertisementPublicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advertisement
-        fields = ('id', 'user','caption', 'image', 'tags')
+        fields = ('id', 'user','caption', 'image', 'tags', 'categories')
 
 
 class TagSerializer(serializers.ModelSerializer):
