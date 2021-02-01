@@ -47,12 +47,17 @@ class AdvertisementPublicViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         """Retrieve requested Ads for authenticated users"""
         tags = self.request.query_params.get('tags')
+        categories = self.request.query_params.get('categories')
         user = self.request.query_params.get('user')
         queryset = self.queryset
 
         if tags:
             tags_title = self._params(tags)
             queryset = queryset.filter(tags__title__in=tags_title)
+
+        if categories:
+            categories_title = self._params(categories)
+            queryset = queryset.filter(categories__title__in=categories_title)
 
         if user:
             user_id = self._params_to_ints(user)
