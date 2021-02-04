@@ -1,28 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import loader
+from rest_framework import viewsets, mixins
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
-from .models import Question, Questionnaire, Answer, MultiChoiceAnswer
+from core.models import Question
 
-def index(request):
-    latest_questionnaire_list = Questionnaire.objects.order_by('-pub_date')[:5]
-    template = loader.get_template('test/index.html')
-    context = {
-        'latest_questionnaire_list': latest_questionnaire_list
-    }
-    return HttpResponse(template.render(context,request))
+from questionnarie import serializers
 
-def detail (request):
-    latest_question_list = Question.objects.all()
-    template = loader.get_template('test/detail.html')
-    context = {
-        'latest_question_list': latest_question_list
-    }
-    return HttpResponse(template.render(context, request))
-
-def results (request):
-    questionnaire_instance = Answer.objects.get(taker=request.user)
-    answer_instance = MultiChoiceAnswer.objects.all()
-
-    if request.method == 'POST':
-       questionnaire_instance.C1_score=+ answer_instance.values_list('C1',flat=True)[selected answer]
+class QuestionViewSet(viewsets.GenericViewSet,
+                   mixins.ListModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.RetrieveModelMixin
+                ):
+    serializer_class = serializers.QuestionSerializer
+    queryset = Question.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
