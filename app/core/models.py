@@ -120,38 +120,6 @@ class Comment(models.Model):
     likes = models.IntegerField(default=0)
 
 
-class Questionnarie(models.Model):
-    Type = User.Types
-    title = models.CharField(max_length=300)
-
-
-class Question(models.Model):
-    questionnarie = models.ForeignKey(
-        Questionnarie,
-        on_delete=models.CASCADE,
-        related_name='questionnarie'
-        )
-    text = models.CharField(max_length=500)
-    choice_type = models.CharField(max_length=10) 
-
-class Answer(models.Model):
-    question = models.ForeignKey(
-        Question,
-        on_delete=models.CASCADE,
-        related_name='question'
-        )
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-        )
-    answer = models.CharField(max_length=20)
-    fileAnswer = models.FileField(upload_to='choicesFiles/', null=True, verbose_name="")
-
-    def __str__(self):
-        return self.answer + ": " + str(self.fileAnswer)
-
-    def give_choices(self,ANSWER_CHOICES):
-        self.answer=models.CharField(max_length=20,choices=ANSWER_CHOICES)
 
 class Tag(models.Model):
     """Helper model for categorizing ads"""
