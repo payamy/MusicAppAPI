@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'advertisement',
     'classroom',
     'direct',
+    'questionnarie',
 ]
 
 MIDDLEWARE = [

@@ -70,6 +70,7 @@ class Advertisement(models.Model):
     caption = models.CharField(max_length=255)
     image = models.ImageField(null=True, upload_to=advertisement_image_file_path)
     tags = models.ManyToManyField('Tag')
+    categories = models.ManyToManyField('Category')
 
 
 class Classroom(models.Model): 
@@ -142,7 +143,7 @@ class QuestionChoice(models.Model):
 
 
 class Tag(models.Model):
-    """Helper model for categorizing ads"""
+    """Helper model for tagging ads"""
     title = models.CharField(max_length=255, primary_key=True)
 
     def clean(self):
@@ -154,6 +155,21 @@ class Tag(models.Model):
     def save(self, **kwargs):
         self.clean()
         return super(Tag, self).save(**kwargs)
+
+
+class Category(models.Model):
+    """Helper model for categorizing ads"""
+    title = models.CharField(max_length=255, primary_key=True)
+
+    def clean(self):
+        self.title = self.title.lower()
+    
+    def __str__(self):
+        return self.title
+
+    def save(self, **kwargs):
+        self.clean()
+        return super(Category, self).save(**kwargs)
 
 
 class DirectMessage(models.Model):

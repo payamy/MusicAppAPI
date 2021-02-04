@@ -5,7 +5,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from core.models import User, Advertisement, Tag
+from core.models import User, Advertisement, Tag, Category
 
 from advertisement.serializers import AdvertisementSerializer, AdvertisementPublicSerializer
 
@@ -27,6 +27,10 @@ def sample_ad(user, **params):
 def sample_tag(title):
     """Create and return a sample tag"""
     return Tag.objects.create(title=title)
+
+def sample_category(title):
+    """Create and return a sample category"""
+    return Category.objects.create(title=title)
 
 
 class PublicAdvertisementAPITest(TestCase):
@@ -177,3 +181,29 @@ class PrivateAdvertisementAPITest(TestCase):
 
         self.assertIn(serializer1.data, res.data)
         self.assertNotIn(serializer2.data, res.data)
+
+    def test_filter_ads_by_category(self):
+        """Test filtering ads by category"""
+        ad1 = sample_ad(user=self.user)
+        ad2 = sample_ad(user=self.user)
+
+        category1 = sample_category('piano')
+        category2 = sample_category('guitar')
+
+        ad1.categories.add(category1)
+        ad2.categories.add(category2)
+
+        ad3 = sample_ad(user=self.user)
+
+        res = self.client.get(
+            PUBLIC_ADVERTISEMENT_URL,
+            {'categories': f'{category1.title},{category2.title}'}
+        )
+
+        serializer1 = AdvertisementPublicSerializer(ad1)
+        serializer2 = AdvertisementPublicSerializer(ad2)
+        serializer3 = AdvertisementPublicSerializer(ad3)
+
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
