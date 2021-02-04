@@ -86,7 +86,7 @@ class ClassroomPublicViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 
-class TeacherViewSet(viewsets.ReadOnlyModelViewSet):
+class TeachersListViewSet(generics.ListAPIView):
     """Get all the teachers in database"""
     serializer_class = serializers.TeacherSeriliazer
     queryset = get_user_model().objects.all()
@@ -97,3 +97,13 @@ class TeacherViewSet(viewsets.ReadOnlyModelViewSet):
         """Just retrieving teachers"""
         return self.queryset.filter(user_type=User.Types.TEACHER)
 
+
+class TeachersItemViewSet(generics.RetrieveUpdateAPIView):
+    serializer_class = serializers.TeacherSeriliazer
+    queryset = get_user_model().objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Just retrieving teachers"""
+        return self.queryset.filter(user_type=User.Types.TEACHER)
