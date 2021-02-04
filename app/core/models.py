@@ -127,7 +127,6 @@ class Question(models.Model):
                                  null=True,
                                  default=None,
                                  blank=True)
-    answer = models.IntegerField(default = 0)
 
 class QuestionChoice(models.Model):
 
@@ -139,7 +138,17 @@ class QuestionChoice(models.Model):
     )
     answerText = models.CharField(
         primary_key=True,
-        max_length=255);
+        max_length=255)
+
+
+class QuestionAnswer(models.Model):
+    
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        default=1
+    )
+    answer = models.CharField(max_length=5, default='00000')
 
 
 class Tag(models.Model):

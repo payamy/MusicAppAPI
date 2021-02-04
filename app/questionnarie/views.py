@@ -6,11 +6,7 @@ from core.models import Question
 
 from questionnarie import serializers
 
-class QuestionViewSet(viewsets.GenericViewSet,
-                   mixins.ListModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.RetrieveModelMixin
-                ):
+class QuestionViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.QuestionSerializer
     queryset = Question.objects.all()
     authentication_classes = (TokenAuthentication,)
