@@ -141,7 +141,7 @@ MEDIA_URL = '/media/'
 
 # MEDIA_ROOT = '/vol/web/media'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
-STATIC_ROOT =os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 # STATIC_ROOT = '/vol/web/static'
 
 AUTH_USER_MODEL = 'core.User'
