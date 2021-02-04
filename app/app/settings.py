@@ -26,7 +26,7 @@ SECRET_KEY = '-up$rgue2_!f+$0f6xl#m1g7#s%u5xhwka=hqu#e^)8=&2yrs='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -138,7 +138,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = '/vol/web/media'
-STATIC_ROOT = '/vol/web/static'
+# MEDIA_ROOT = '/vol/web/media'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media/')
+STATIC_ROOT =os.path.join(BASE_DIR, 'static/')
+# STATIC_ROOT = '/vol/web/static'
 
 AUTH_USER_MODEL = 'core.User'
