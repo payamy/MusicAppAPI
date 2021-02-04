@@ -9,5 +9,6 @@ router.register('questions', views.QuestionViewSet, basename='questions')
 app_name = 'question'
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('my_answer/', views.QuestionAnswerView.as_view(), name='answer'),
 ]
