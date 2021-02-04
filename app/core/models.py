@@ -181,7 +181,7 @@ class Category(models.Model):
 
     def save(self, **kwargs):
         self.clean()
-        return super(Tag, self).save(**kwargs)
+        return super(Category, self).save(**kwargs)
 
 
 class DirectMessage(models.Model):
