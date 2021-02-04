@@ -78,7 +78,7 @@ class TeacherSeriliazer(serializers.ModelSerializer):
 
         score = 0
         for i in range(len(user_answer)):
-            if user_answer[i] == teacher_answer[i] and user_answer[i] != 0:
+            if user_answer[i] == teacher_answer[i] and user_answer[i] != '0':
                 score = score + 1
         print(score)
         instance.compatibility = score
