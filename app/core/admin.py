@@ -34,5 +34,6 @@ admin.site.register(models.Tag)
 admin.site.register(models.DirectMessage)
 admin.site.register(models.Question)
 admin.site.register(models.QuestionChoice)
+admin.site.register(models.QuestionAnswer)
 admin.site.register(models.Chat)
 
