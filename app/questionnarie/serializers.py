@@ -1,19 +1,19 @@
+
 from rest_framework import serializers
 
-from core.models import Question, Questionnaire, Answer, MultiChoiceAnswer
+from core.models import Question, QuestionChoice
 
 
 
-class Questionnarieserializer(serializers.ModelSerializer):
-    """Serialize a questionnarie"""
-
-    class Meta:
-        model = Questionnaire
-        fields = ('title')
 
 class QuestionSerializer(serializers.ModelSerializer):
     """Serialize a questionnarie"""
 
+    questionchoice = serializers.PrimaryKeyRelatedField(
+    	many=True,
+    	read_only=True)
+
     class Meta:
         model = Question
-        fields = ('Description', 'type')
+        fields = ('id','title', 'answer', 'questionchoice')
+        read_only_fields = ('id','title', 'questionchoice')

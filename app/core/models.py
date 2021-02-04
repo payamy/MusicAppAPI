@@ -119,6 +119,26 @@ class Comment(models.Model):
     text = models.CharField(max_length=255, blank=False, default='-')
     likes = models.IntegerField(default=0)
 
+class Question(models.Model):
+    
+    title = models.CharField(max_length=500,
+                                 verbose_name="Question",
+                                 null=True,
+                                 default=None,
+                                 blank=True)
+    answer = models.IntegerField(default = 0)
+
+class QuestionChoice(models.Model):
+
+    question = models.ForeignKey(
+        Question,
+        on_delete=models.CASCADE,
+        related_name='questionchoice',
+        default=0
+    )
+    answerText = models.CharField(
+        primary_key=True,
+        max_length=255);
 
 
 class Tag(models.Model):
